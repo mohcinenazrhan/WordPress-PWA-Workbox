@@ -3,6 +3,14 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox
 if (workbox) {
 	console.log(`Yay! Workbox is loaded 🎉`);
 
+	// Cache pages
+	workbox.routing.registerRoute(
+		new RegExp(/(.*\.html|(\/([a-zA-Z\-0-9]+\/?)))$/),
+		new workbox.strategies.NetworkFirst({
+			cacheName: 'pages-cache'
+		})
+	);
+
 	// Register a route to let’s add a cache fallback to our JavaScript & CSS files of same origin
 	workbox.routing.registerRoute(
 		new RegExp('\\.(js|css)'),

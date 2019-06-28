@@ -47,6 +47,14 @@ if (workbox) {
 			]
 		})
 	);
+
+	// Cache avatar images
+	workbox.routing.registerRoute(
+		/.*(?:.gravatar)\.com/,
+		new workbox.strategies.StaleWhileRevalidate({
+			cacheName: 'gravatar'
+		})
+	);
 } else {
 	console.log(`Boo! Workbox didn't load 😬`);
 }

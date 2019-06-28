@@ -10,6 +10,26 @@ if (workbox) {
 			cacheName: 'static-resources'
 		})
 	);
+
+	// Cache image & svg files.
+	workbox.routing.registerRoute(
+		/\.(?:png|jpg|jpeg|svg|gif)$/,
+		// Use the cache if it's available.
+		new workbox.strategies.CacheFirst({
+			// Use a custom cache name.
+			cacheName: 'image-cache',
+			plugins: [
+				new workbox.expiration.Plugin({
+					// Keep at most 1000 entries.
+					maxEntries: 1000,
+					// Don't keep any entries for more than 30 days.
+					maxAgeSeconds: 30 * 24 * 60 * 60,
+					// Automatically cleanup if quota is exceeded.
+					purgeOnQuotaError: true
+				})
+			]
+		})
+	);
 } else {
 	console.log(`Boo! Workbox didn't load 😬`);
 }

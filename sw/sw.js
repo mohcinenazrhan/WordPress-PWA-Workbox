@@ -31,6 +31,15 @@ if (workbox) {
 		})
 	);
 
+	/* Cache fonts files. */
+	// Cache the Google Fonts stylesheets with a stale-while-revalidate strategy.
+	workbox.routing.registerRoute(
+		/^https:\/\/fonts\.googleapis\.com/,
+		new workbox.strategies.StaleWhileRevalidate({
+			cacheName: 'google-fonts-stylesheets'
+		})
+	);
+
 	// Cache the underlying font files with a cache-first strategy for 1 year.
 	workbox.routing.registerRoute(
 		new RegExp('.+\\.(woff2|woff|ttc|ttf|eot)'),

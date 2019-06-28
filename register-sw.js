@@ -3,7 +3,10 @@ if ('serviceWorker' in navigator) {
 	// Use the window load event to keep the page load performant
 	window.addEventListener('load', () => {
 		navigator.serviceWorker.register(
-			'http://localhost/wp-pwa/wp-content/themes/newsmag/WordPress-PWA-Workbox/sw/sw.php'
+			'http://localhost/wp-pwa/wp-content/themes/newsmag/WordPress-PWA-Workbox/sw/sw.php',
+			{
+				scope: '/'
+			}
 		);
 	});
 }

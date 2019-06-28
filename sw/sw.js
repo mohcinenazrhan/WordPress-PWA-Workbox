@@ -3,6 +3,10 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox
 if (workbox) {
 	console.log(`Yay! Workbox is loaded 🎉`);
 
+	// Skip Waiting and Clients Claim the default service worker lifecycle.
+	workbox.core.skipWaiting();
+	workbox.core.clientsClaim();
+
 	// Cache pages
 	workbox.routing.registerRoute(
 		new RegExp(/(.*\.html|(\/([a-zA-Z\-0-9]+\/?)))$/),

@@ -30,6 +30,23 @@ if (workbox) {
 			]
 		})
 	);
+
+	// Cache the underlying font files with a cache-first strategy for 1 year.
+	workbox.routing.registerRoute(
+		new RegExp('.+\\.(woff2|woff|ttc|ttf|eot)'),
+		new workbox.strategies.CacheFirst({
+			cacheName: 'webfonts',
+			plugins: [
+				new workbox.cacheableResponse.Plugin({
+					statuses: [ 0, 200 ]
+				}),
+				new workbox.expiration.Plugin({
+					maxAgeSeconds: 60 * 60 * 24 * 365,
+					maxEntries: 30
+				})
+			]
+		})
+	);
 } else {
 	console.log(`Boo! Workbox didn't load 😬`);
 }

@@ -10,6 +10,7 @@ if (workbox) {
 		precache: 'precache'
 	});
 
+	const precacheCacheName = workbox.core.cacheNames.precache;
 	const OFFLINE_PAGE = 'http://localhost/wp-pwa/offline-page/';
 
 	// List of links to precache.
@@ -27,11 +28,22 @@ if (workbox) {
 	const pagesHandler = async (args) => {
 		try {
 			const response = await networkFirst.handle(args);
-			return response || caches.match(OFFLINE_PAGE);
+			return response || getTheOfflinePage();
 		} catch (error) {
-			return caches.match(OFFLINE_PAGE);
+			return getTheOfflinePage();
 		}
 	};
+
+	async function getTheOfflinePage() {
+		try {
+			const cache = await caches.open(precacheCacheName);
+			const cachedResponse = await cache.match(OFFLINE_PAGE);
+			if (cachedResponse) return cachedResponse;
+			else throw Error('The fallback offline page that was expected is missing.');
+		} catch (error) {
+			console.log('Get fallback offline page error ', error);
+		}
+	}
 
 	const navigationRoute = new workbox.routing.NavigationRoute(pagesHandler, {
 		// Configure with RegExps as appropriate.

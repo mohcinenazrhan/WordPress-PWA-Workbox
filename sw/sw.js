@@ -20,12 +20,17 @@ if (workbox) {
 	workbox.core.clientsClaim();
 
 	// Cache pages
-	workbox.routing.registerRoute(
-		new RegExp(/(.*\.html|(\/([a-zA-Z\-0-9]+\/?)))$/),
-		new workbox.strategies.NetworkFirst({
-			cacheName: 'pages-cache'
-		})
-	);
+	const networkFirst = new workbox.strategies.NetworkFirst({
+		cacheName: 'pages-cache'
+	});
+
+	const navigationRoute = new workbox.routing.NavigationRoute(networkFirst, {
+		// Configure with RegExps as appropriate.
+		whitelist: [ /.*\.html/, /(\/([a-zA-Z\-0-9]+\/?))$/ ],
+		blacklist: [ /\/wp-admin/, /\/wp-login/, /preview=true/ ]
+	});
+
+	workbox.routing.registerRoute(navigationRoute);
 
 	// Register a route to let’s add a cache fallback to our JavaScript & CSS files of same & cross origin
 	workbox.routing.registerRoute(

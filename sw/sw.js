@@ -3,6 +3,18 @@ importScripts('https://storage.googleapis.com/workbox-cdn/releases/4.3.1/workbox
 if (workbox) {
 	console.log(`Yay! Workbox is loaded 🎉`);
 
+	// Configure workbox precache
+	workbox.core.setCacheNameDetails({
+		prefix: 'wp-pwa',
+		suffix: 'v1',
+		precache: 'precache'
+	});
+
+	const OFFLINE_PAGE = 'http://localhost/wp-pwa/offline-page/';
+
+	// List of links to precache.
+	workbox.precaching.precacheAndRoute([ OFFLINE_PAGE ]);
+
 	// Skip Waiting and Clients Claim the default service worker lifecycle.
 	workbox.core.skipWaiting();
 	workbox.core.clientsClaim();

@@ -24,7 +24,16 @@ if (workbox) {
 		cacheName: 'pages-cache'
 	});
 
-	const navigationRoute = new workbox.routing.NavigationRoute(networkFirst, {
+	const pagesHandler = async (args) => {
+		try {
+			const response = await networkFirst.handle(args);
+			return response || caches.match(OFFLINE_PAGE);
+		} catch (error) {
+			return caches.match(OFFLINE_PAGE);
+		}
+	};
+
+	const navigationRoute = new workbox.routing.NavigationRoute(pagesHandler, {
 		// Configure with RegExps as appropriate.
 		whitelist: [ /.*\.html/, /(\/([a-zA-Z\-0-9]+\/?))$/ ],
 		blacklist: [ /\/wp-admin/, /\/wp-login/, /preview=true/ ]

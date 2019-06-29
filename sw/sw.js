@@ -15,9 +15,9 @@ if (workbox) {
 		})
 	);
 
-	// Register a route to let’s add a cache fallback to our JavaScript & CSS files of same origin
+	// Register a route to let’s add a cache fallback to our JavaScript & CSS files of same & cross origin
 	workbox.routing.registerRoute(
-		new RegExp('\\.(js|css)'),
+		new RegExp('.+\\.(js|css)'),
 		new workbox.strategies.StaleWhileRevalidate({
 			cacheName: 'static-resources'
 		})

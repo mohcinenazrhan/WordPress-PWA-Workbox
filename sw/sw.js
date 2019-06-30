@@ -24,6 +24,9 @@ if (workbox) {
 	workbox.core.skipWaiting();
 	workbox.core.clientsClaim();
 
+	// Enable Offline Google Analytics
+	workbox.googleAnalytics.initialize();
+
 	// Cache pages
 	const networkFirst = new workbox.strategies.NetworkFirst({
 		cacheName: 'pages-cache'

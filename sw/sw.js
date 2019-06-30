@@ -4,6 +4,10 @@ if (workbox) {
 	console.log(`Yay! Workbox is loaded 🎉`);
 
 	// Configure workbox precache
+
+	// Force production builds
+	workbox.setConfig({ debug: false });
+
 	workbox.core.setCacheNameDetails({
 		prefix: 'wp-pwa',
 		suffix: 'v1',
